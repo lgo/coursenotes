@@ -1,0 +1,914 @@
+\documentclass[12pt,oneside,fleqn]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts,amsmath,amsthm,amssymb}
+\usepackage{graphicx,hyperref,xstring,enumitem}
+
+\setlength{\mathindent}{0pt}
+\setlength{\textheight}{9.5in}
+\setlength{\textwidth}{7.0in}
+\setlength{\topmargin}{-0.75in}
+\setlength{\oddsidemargin}{-0.25in}
+\setlength{\evensidemargin}{0.75in}
+\setlength{\parskip}{0.15in}
+\setlength{\parindent}{0in}
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[subsection]
+\newtheorem{cor}{Corollary}[thm]
+\newtheorem{prop}{Proposition}[subsection]
+\newtheorem{defn}{Definition}[subsection]
+\newtheorem{ex}{Example}[subsection]
+\newtheorem*{note}{Note}
+\newtheorem*{recall}{Recall}
+\newtheorem*{remark}{Remark}
+\newtheorem*{aside}{Aside}
+
+\newcommand{\Lp}{\mathcal{L}^p}
+\newcommand{\F}{\mb{F}}
+\newcommand{\Co}{\mb{C}}
+\newcommand{\R}{\mb{R}}
+\newcommand{\M}{\mb{M}}
+\newcommand{\N}{\mb{N}}
+\newcommand{\mb}[1]{\ensuremath{\mathbb{#1}}}
+
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\set}[1]{\left{#1\right}}
+\newcommand{\series}[2][1]{\ensuremath {\displaystyle\sum\limits_{n=#1}^\infty #2}}
+\newcommand{\brac}[1]{\left( #1 \right)}
+
+\begin{document}
+\thispagestyle{empty}
+\subsection*{CS 245 NOTES}
+Notes typeset and compiled by Joey Pereira \\
+\vspace{1in}
+\\
+\underline{Disclaimer:}
+These notes are not meant to be a replacement for lecture. They are meant to be a method of learning for myself in the ways of \LaTeX, and are meant to be used for reference or review of content.
+
+\underline{Huge Forewarning:}
+Majority of these notes have been directly typeset in class and have no been proofread, so they are prone to extreme amounts of formatting mistakes and errors. Much of these notes also will diverge from the content covered in lecture itself as these notes turn into an independent introduction to logic for computer science - meant to be a full replacement for lecture but cover the same material.
+
+\newpage
+
+\noindent
+\tableofcontents
+\thispagestyle{empty}
+\clearpage
+\newpage
+
+\pagenumbering{arabic} 
+\setcounter{page}{1}
+\section{Introduction}
+\section{Propositional Logic}
+\subsection{Introduction}
+\subsection{Syntax}
+\subsection{Semantics}
+\subsection{Formal Proofs}
+
+\section{Intro}
+About logic and it's use in software engineering. Particularly used for program verification.
+
+\subsection{Logic Arguments}
+\begin{ex}
+If the train arrives late and there are no taxis then John will not be late. \\
+Premise: John was not late. The train arrived late \\
+$\implies$ There were taxis \\ \\
+Symbolized: \\
+p. Train is late \\
+q. Taxis available\\
+r. John is late \\
+$p \wedge ~q \implies r$ \\
+$~r \wedge p \implies q$
+\end{ex}
+
+\begin{ex}
+If it is raining and Jane does not have her umbrella, Jane will get wet. \\
+Premise: Jane was not wet. It is raining \\
+$\implies$ Jane had her umbrella
+\end{ex}
+
+\underline{Propositional Logic} \\
+smallest building block is a statement without connectives, such as "and". The example with the trains is reasoning with propositional logic. \\
+\underline{Predicate Logic} (First Order Logic) \\
+includes a means to describe relationships between objects, for example "every course has at least one object" \\
+\underline{Program Verification} \\
+ways to describe what a system is required to do and reasoning about its correctness. \\
+
+\subsection{Review}
+example to do:
+sum from 1 to n for $ \frac{1}{i(i+1)} = \frac{n}{ n+1}$ \\
+ex. p(n): 3 divides $(4^n + 5)$
+
+\section{Propositional Logic}
+What is a proposition? \\
+A declarative sentence which is either true or false.
+
+A simple (atomic) proposition is the basic building blocks to create compound propositions using connectives.
+
+Proving this property of R(A): A has the length > 0 \\
+Prove $R(A) \forall A \in Form(\Lp)$
+\begin{enumerate}
+\item Assume $A \in Atom(\Lp)$ \\
+therefore $A = p$ \\
+Then $length(A) = 1 > 0$ \\
+\item Let $A \in Form(\Lp)$ \\
+Assume $R(A)$. Prove $R(\neg A)$ \\
+As $R(A) \implies length(A) > 0$ \\
+$length(\neg A) = length(A) + 3 > 3 > 0$ \\
+\item Let $A, B \in Form(\Lp)$ \\
+Assume $R(A), R(B)$ \\
+Prove $R(A * B)$ \\
+The length of $(A * B) > 0$ then clearly
+\end{enumerate}
+
+Parse Tree
+The leaves of a parse tree of a well formed formula are labeled with atoms
+The nodes of a parse tree of a well formed formula labeled have one children
+the node labeled with a binary connective have exactly two children
+
+Prove m(n) for every n in natural
+let M(n): A of height n has the same number of left and right brackets
+prove M(n) for any formula of height n, for every n in natural
+b.c. smallest formula, n=1 (single atom)
+therefore a in atom
+'(' = 0
+')' = 0
+Inductive hypothesis
+n > 1
+assume for any formula A of height <= n (n) prove M(n + 1)
+
+%tutorial
+\begin{enumerate}
+\item If I study for exams, then I get good grades \\
+\item I do not eat healthy food whether or not I study for exams
+\item I will pass the class only if I get good grades
+\item If I do not study for exams, then I get good grades only if I eat healthy food
+\item I will either pass the class or eat healthy food, but not both
+\end{enumerate}
+All the atoms \\
+s: I study for exams \\
+g: I get good grades \\
+h: I eat healthy food \\
+p: I will pass the class
+\begin{enumerate}
+\item $(s \implies g)$
+\item $(\neg h)$ [whether or not does not add anything]
+\item $(p \implies g)$
+\item $((\neg s) \implies (g \implies h))$
+\item $(p \lor h) \land (\neg (p \land h))$
+\end{enumerate}
+
+Well formed formula \\
+1) $Atom(\Lp) \subset Form(\Lp)$ \\
+2) If $A \in Form(\Lp) \implies (\neg A) \in Form(\Lp)$ \\
+3) If $A,B \in Form(\Lp) \implies (A * B) \in Form(\Lp)$, where * is a binary connective.
+
+Structural Induction.
+Recursively proving that a concatenation or similar of a bunch of elements holds the same property as those elements $\implies$ Base case the lowest level element \\
+Suppose that if the number of occurrences of atoms in a formula is m and the number of occurrences of any binary connective is n. Than prove that m = n + 1
+proof: \\
+Base Case: For an atom, m = 1 and n = 1. So the statement is true. \\
+Inductive hypothesis: Assume it is true for formula $\phi$ and $\psi$, \\
+Here $m_\phi$ = number of occurrences of atoms in $\phi$ \\
+$m_\psi$ = number of occurrences of atoms in $\psi$ \\
+$n_\phi$ = number of occurrences of binary connectives in $\phi$ \\
+$n_\psi$ = number of occurrences of binary connectives in $\psi$ \\
+so $m_\phi = n_\phi + 1$ \\
+$m_\psi = b_\psi + 1$ \\
+Inductive step: \\
+Consider the formula $\Omega = (\neg \phi), m_\Omega = m_\phi, n_\Omega = n_\phi$ \\
+Thus true for $\neg$ \\
+Consider the formula $\Omega = (\phi * \psi), m_\Omega = m_\phi + m_psi, n_\Omega = n_\phi + n_\psi + 1$ by IH \\
+$m_\Omega = n_\phi + n_\psi + 2$ \\
+$\implies m_\Omega = n_\Omega + 1$. \\
+Therefore proven true for binary connective \\
+Therefore we have proven this true by structural induction.
+
+example of this property \\
+$\phi = (((\neg p) \implies s) \land r) m_\phi = 3 n_\phi - 2$ \\
+$\psi = (p \implies (\neg q)) m_\psi = 2 n_\psi = 1$
+
+% tutorial two
+1. Give the truth table for the following formulas. \\
+ a) $(p \implies q) \land r$ \\
+b) $(p \implies \neg p)$ \\
+c) $( (p \implies q) \land (q \implies p))$ \\
+d) $(p \land r) \lor (\neg r \implies q)$ \\
+e) $(\neg r \land p) \lor (r \lor \neg p)$ \\
+
+2) answer the following questions about semantic implication
+a) let $\Sigma$ be the set of well formed propositional formulas and let A be a well formed propositional formula. What does it mean for $\Sigma \vDash A$. What does it mean for $\Sigma \not \vDash A$.
+
+b) Consider the set $\Sigma$ and formula A. \\
+$\Sigma = { p, (p \implies q)} A = q$ \\
+Does $\Sigma \models A$? \\ \\
+c) Consider $\Sigma = { q, (p \implies q)} $, A = p \\
+Does $\Sigma \not \models A$? \\
+
+b) tt: \\
+p q $p \implies q$ \\
+0 0 1 \\
+0 1 1 \\ 
+1 0 0 \\ 
+1 1 1 \\
+As the only time when $\Sigma^t$ is true is the last line, where$ A^t$ is also true, we have $\Sigma \models A$ is true.
+
+c)
+As $\Sigma \models A $is not true, there is one truth valuation then where $\Sigma^t \implies A^t$. Therefore $\Sigma \not \models A$.
+
+3.
+Let C be the set ${ \land, \lor, \implies }$ of propositional connectives and F be the set ${ \alpha, \beta, \gamma }$ of well-formed propositional formulas. \\
+a) Suppose that, $\theta$ is a well formed formula that uses only connecties C and the formulas in F. \\
+The formulas $\alpha, \beta, \gamma$ are all tautologies. \\
+Prove that $\theta$ is a tautology.
+
+Base case: \\
+$\alpha \beta \gamma$ are tautologies \\
+Induction hyp: \\
+let $\phi$ and $\psi$ be two well formed formulas and they use only connectives in C and forumulas in F. \\
+$\phi$ and $\psi$ are both tautologies. \\
+Inductive step: \\
+$\theta = \phi \land \psi$ \\
+$\phi \lor \psi$ \\
+$\phi \implies \psi$ \\
+
+truth table: \\
+$\phi^t \psi^t \land^t or^t implies^t$ (of $\phi$ and $\psi$) \\
+0 0 0 0 1 \\
+0 1 0 1 1 \\
+1 0 0 1 0 \\
+1 1 1 1 1 <- this is the only formula we get as $\phi^t = \psi^t = 1$ for any truth valuation \\
+Thus proved true.
+
+b) \\
+Suppose that $\theta $is a well formed formula that as well only used those connectives and formulas and also the $\neg$ connective. \\
+Find a counter example to show that $\theta$ is not necessarily a tautology. \\
+$A^t \in { 0 , 1}$ \\ 
+$t: Atom \Lp -> { 0, 1 }$ \\
+
+Having atom values \\
+$A_1...A_n \models A$ means that we can deduce the value of A (being true) when we know the premise or propositional atoms. \\
+
+thrm 2.5.2. \\
+proof => direction \\
+$a1...an \models a$ \\
+prove $a1 and .... an \implies a$ is a tautology. \\
+
+$a+1 ... a_n$ $\vDash$ a for every t  for which $a1^t = ... an^t = 1$ we have $a^t = 1$ \\
+
+prove that for any truth valuation \\
+$t^1, a1^{t^1} and ... an^{t^1} \implies a^t = 1$ \\
+
+1) let t be any truth valuation which \\ 
+$a1^t = ... an^t = 1$(of course $a^t$ = 1) \\
+$a^t and ... an^t$ $\implies$ $a^t$ = 1 \\
+2) let t' be any truth valuation for which \\ 
+which $a_{i}^{t'} = 0$ for some i between 1 and n \\
+$a_{1}^{t'} and ... a_n^{t'} \implies a^t$ \\
+as some ai = 0 we have \\
+$0 \implies a^t = 1$ \\
+
+now <= direction \\
+$a1 and ... an \implies a$ is a tautology \\
+prove $a1...an$ has a tautological consequence of a \\
+i.e. prove $a1...an \vDash a$ \\
+
+for every $t a1^t and ...an^t \implies a^t = 1$ \\
+let t' be a truth valuation such that \\
+$a1^{t'} = ... = an^{t'} = 1$ \\
+prove $a^{t'} = 1$ \\
+$a_1^{t'} and ... a_n^{t'} \implies a^t = 1$ \\
+becomes \\
+$1 \implies a^{t'} = 1$ \\
+thus $a^{t'} = 1$ \\
+
+Adequate set - set of connectives C, such that any other connective can be represented using the connectives from C
+
+Th. $\{ \neg, \land, \lor \}$ is an adequate set. \\
+$p \implies q \equiv \neg p \lor q$ \\
+$p \iff q \equiv (p \implies q) \land (q \implies p)$ \\
+Corollary: \\
+$\{ \neg, \land \}$ \\
+$\{ \neg, \lor \}$ \\
+$\{ \neg, \implies \}$ \\
+
+Hilbert system axioms: \\
+1) $A \implies (B \implies A)$ \\
+2) $((A \implies (B \implies C)) \implies ((A \implies B) \implies (A \implies C)))$ \\
+3) $((\neg A \implies \neg B) \implies (B \implies A))$ \\
+
+Modus Ponens (MP) \\
+${\phi, \phi \implies \psi} \vdash_H \psi$ \\
+$\frac{\phi, \psi \implies \psi}{\psi}$ \\
+1) $\alpha_1$ (premise) \\
+
+Proving $\vdash_H A \implies A$ \\
+1) $A \implies ((A implies A) \implies A)$ (axiom 1) \\
+2) $A \implies (( A \implies A) \implies A) \implies$ (($A \implies (A \implies A)) \implies (A \implies A)$) (axiom 2) \\
+3) $((A \implies (A \implies)) \implies (A \implies A))$ (modus ponens 1,2) \\
+4) $A \implies (A \implies A)$ (axiom 1) \\
+5) $A \implies A$ (modus ponens 3,4) \\
+
+TH transitivity \\
+${ A \implies B, B \implies C} \vdash_H A \implies C$ \\
+1) $A \implies B$ (premise) \\ 
+2) $B \implies C$ (premise) \\
+3) $( A \implies (B \implies C)) \implies (( A \implies B) \implies (A \implies C))$ (axiom 3) \\
+4) $(B \implies C) \implies (A \implies (B \implies C)$ (axiom 1) \\
+5) $B \implies C)$ (modus ponens 2, 4) \\
+6) $(A \implies B) \implies (A \implies C)$ (modus ponens 3,5) \\
+7) $A \implies C)$ (modus ponens 1,6) \\
+
+Th. (Deduction Theorem) \\
+$\Sigma \vdash_H (A \implies B) iff A_1 A \vdash_H B$
+${\alpha_1,...,\alpha_n} \vdash_H \alpha $ \\
+$\vdash_H (\alpha_1 \implies ...(\alpha_{n-1}(\alpha_n \implies \alpha))...)$ \\
+
+ex.3 \\
+$\vdash_H (\neg A \implies (A \implies B))$ \\
+1) $\neg A \implies (\neg B \implies \neg A)$ (axiom 1) \\
+2) $(\neg B \implies \neg A) \implies (A \implies B)$ \\
+3) $\neg A \implies ( A \implies B)$ (ex. 2 transitivity) \\
+
+ex. 4 \\
+$\vdash_H \neg\neg A \implies A$ \\
+By Ded. Thrm $\neg \neg A \vdash_H A$ \\
+
+1) $\neg \neg A (premise)$ \\
+2) $\neg \neg A \implies (\neg \neg \neg \neg A A \implies  \neg \neg A) (axiom 1)$ \\
+3) $\neg \neg \neg \neg A \implies \neg \neg A $(modus ponens 1,2) \\
+4) $( \neg \neg \neg \neg A \implies \neg \neg A) (\neg A \implies \neg \neg \neg A)$ (axiom 3) \\
+5) $\neg A \implies \neg \neg \neg A) $(modus ponens 3, 4) \\
+6) $(\neg A \implies \neg \neg \neg A) \implies ( \neg \neg A \implies A)$ (axiom 3) \\
+7) $\neg \neg A \implies A$ (modus ponens 5, 6) \\
+8) $A$ (modus ponens 1, 7) \\
+
+
+% tutorial
+Any set of connectives with the capability to express all truth-tables is said to be adequate \\
+$\{ \land , \lor , \neg \}$ is adequate \\
+$\neg p$ \\
+$p \land q$ \\
+$p \lor q$ \\
+$p \implies q$ \\
+$p \iff q$ \\
+$p \implies q \equiv \neg p \lor q$ \\
+$p \iff q \equiv (p \land q) \lor (\neg p \land \neg q) \equiv (p  \implies q) \land (q \implies p) \equiv (\neg p \lor q) \land (\neg q \lor p)$ \\
+
+Exercise:- Show ${\neg, \land}, {\neg, \lor}, {\land, \implies}$ and adequate. \\ 
+NAND $(\uparrow / \barwedge)$/Sheffer Stroke (|), and NOR$(\downarrow )$/shroder connective are adequate. \\
+
+Proof \\
+NOR $\vdash$ \\
+$\neg p \equiv p \vdash$ \\
+$p \lor q \equiv \neg \neg (p \lor q) \equiv \neg (p \vdash q) \equiv (p \vdash q) \vdash (p \vdash q)$ \\
+$p \land q \equiv \neg (\neg A \lor \neg B) \equiv (\neg A \vdash \neg B)$, by De Morgan's Law. \\
+$p \implies q \equiv (\neg p \lor q) \equiv \neg (\neg p \vdash q) \equiv ((p \vdash p) \vdash q)$ \\
+$p \iff q \equiv (p \implies q) \land (q \implies p)$ \\
+
+Hilbert System \\
+$\Sigma \vdash A$ means, A is provable from $\Sigma$ \\
+Axioms \\
+Ax. 1 $\phi \implies (\psi \implies \phi)$ \\
+Ax. 2 $(\phi \implies (\psi \implies \gamma)) \implies ((\phi \implies \psi) \implies (\phi \implies \gamma))$ \\
+Ax. 3 $(\neg \phi \implies \neg \phi) \implies (\phi \implies \psi)$ \\
+
+Modus Ponens (MP) \\
+$\frac{\phi,\phi \implies \psi}{\phi}$ \\
+
+Is the following an axiom? \\
+$(p \implies q) \implies (((\neg p) \implies q) \implies (p \implies q))$ \\
+
+Ex. 1 \\
+${ \alpha \implies \beta , \beta \implies \gamma} \vdash \alpha \implies \gamma$ \\
+This formula is equivalent to, \\
+${\alpha \implies \beta, \beta \implies \gamma, \alpha} \vdash \gamma$ \\
+1. $\alpha \implies \beta$ (premise) \\
+2. $\beta \implies \gamma $(premise) \\
+3. $\alpha $(premise) \\
+4. $\beta $(mp 1,3) \\
+5. $\gamma $(mp 2,4) \\
+PROVED
+
+Ex. 2 \\
+${ (\alpha \implies \beta) \implies \gamma} \vdash \alpha \implies (\beta \implies gamma)$ \\
+1. $(\alpha \implies \beta) \implies \gamma $(premise) \\
+2. $((\alpha \implies \beta) \implies \gamma) \implies (\beta \implies ((\alpha \implies \beta) \implies \gamma))$ (Ax. 1) \\
+3. $(\beta \implies (( \alpha \beta) \implies gamma))$ (mp 1,2) \\
+4. $(\beta \implies (( \alpha \beta) \implies gamma)) \implies (( \beta \implies (\alpha \implies beta)) \implies (\beta \implies \gamma))$ (Ax. 2) \\
+5. $((\beta \implies (\alpha \implies \beta)) \implies (\beta \implies \gamma))$ (mp 4,5) \\
+6. $(\beta \implies (\alpha \implies \beta))$ (Ax. 1) \\
+7. $(\beta \implies \gamma)$ (mp 5,6) \\
+8. $(\beta \implies \gamma) \implies (\alpha \implies (\beta \implies \gamma))$ (ax. 1) \\
+9. $(\alpha \implies (\beta \implies \gamma))$ (mp 7,8) \\
+
+Ex. 3 \\
+${ \phi \implies (\psi \implies \theta), \psi} \vdash (\phi \implies \theta)$ \\
+1. $(\phi \implies (\psi \implies \theta)$ (premise) \\
+2. $\psi$ (premise) \\
+3. $(\phi \implies (\psi \implies \theta) ) \implies ((\phi \implies \psi) \implies (\phi \implies \theta))$ (ax. 2) \\
+4. $((\phi \implies \psi) \implies (\phi \implies \theta)$ (mp 1,3) \\
+5. $\psi \implies (\phi \implies \psi)$ (ax. 1) \\
+6. $\phi \implies \psi$ (mp 2, 5) \\
+7 $\phi \implies \theta$ (mp 4,6) \\
+
+
+1) Reflexivity (REF) \\
+$\psi \vdash \psi, \frac{\phi}{\phi}$ \\
+2) Addition of premises (+) \\
+$\Sigma \vdash \phi$ \\
+then $\Sigma' \cup \Sigma \vdash \phi, \frac{ \frac{\omega}{\phi}}{\frac{\omega \omega'}{\phi}}$ \\
+3) $\neg$ elimination \\
+$\Sigma, \neg \psi \vdash \omega$ \\
+$\Sigma, \neg \psi \vdash \neg \omega$ \\
+then \\
+$\Sigma \vdash \phi$ \\
+
+prove hilbert axioms using natural deduction \\
+
+axiom 1: \\
+$\phi \implies (\psi \implies \phi)$ \\
+axiom 2: \\
+$(\phi \implies (\psi \implies \omega)) \implies ((\phi \implies \psi \implies \phi \implies \omega))$ \\
+axiom 3: \\
+$(\neg \phi \implies \neg \psi) \implies (\psi \implies \phi)$ \\
+ 
+axiom2: \\
+1. $(\phi \implies \psi \implies \zeta)$ assumption \\
+2.     $\phi \implies \psi$ assumption \\
+3.			$\phi$ assumption \\
+4. 			$\psi$ $\implies -$ \\
+5.			$\psi \implies \zeta$ $\implies -$ \\
+6			$\zeta$ $\implies -$ \\
+7.		$\phi \implies \zeta$ $\implies +$ \\
+8.$\phi \implies \psi \implies \phi \implies \zeta$ $\implies +$ \\
+
+Q5 a) hint \\
+$\Sigma , \phi \vdash_H \psi$ \\
+1. $\alpha_1$ \\
+ . \\
+ . \\
+ . \\
+$ \alpha_n = \psi$ \\
+$ \Sigma \vdash \phi \implies \psi$ \\
+ 1. $\phi \implies \alpha_1$ \\
+  . \\
+  . \\
+  . \\
+ n.$ \phi \implies \alpha_n (\phi \implies \psi)$ \\
+ not sure if steps are actual step counts \\
+ Case $\alpha_i \in \Sigma$ (3 steps) \\
+ Case $\alpha_i \in Axioms$ (8 steps) \\
+ Case $\alpha_i = \phi$ (7 steps) \\
+ Case $\alpha_i$ - MP (10 steps) \\
+Soundness thrm \\
+
+$\Sigma \vdash \alpha \implies \Sigma \vDash \alpha $\\
+contrapositive  \\
+$\Sigma \not \vDash \alpha \implies \Sigma \not \vdash \alpha$ \\
+e.g. make a counter example (truth table, $\vDash$) and show that it is not valid. \\
+
+Th 2.6.2 $\Sigma \vdash \phi $then exists $\Sigma^o -> finite \Sigma^o \subset \Sigma$ \\
+Proof: Structural induction on the size of $\Sigma$ \\
+Bc. $\Sigma = {\phi} \phi \vdash \phi$ \\
+$\Sigma^o := \Sigma and \Sigma^o -> finite$ \\
+Ind. hyp. \\
+Assume that for $\Sigma \vdash \phi$ where $\Sigma is of size \leq k$, there exists a $\Sigma^o \subset \Sigma$ such that $\Sigma^o $-> finite and $\Sigma^o \vdash \phi$  \\
+Ind. setp. \\
+$\Sigma \vdash \phi$ \\
+$\Sigma$ is of size k+1 \\
+Consider 10 cases \\
++) $\Sigma \vdash \phi size \leq k$ \\
+then $\Sigma \cup \Sigma' \vdash \phi$ size $k_1$ \\
+By ind. hyp $\exists \Sigma^o \subset \Sigma , \Sigma^o$ -> finite \\
+$\Sigma^o \vdash \phi$ \\
+$\Sigma^o \subset \Sigma \cup \Sigma'$ \\
+$\Sigma^o \vdash \phi, \Sigma^o$ -> finite \\
+$\neg$ -) \\
+1 $\Sigma, \neg \phi \vdash \psi$ \\
+2 $\Sigma, \neg \phi \vdash \neg \psi$ \\
+3 $(?) \Sigma \vdash \phi$ \\
+$\neg$) by ind hype \\
+$\exists \Sigma_1 \subset \Sigma$ \\
+$\Sigma_1$ -> finite \\
+$\Sigma_1 \vdash \psi$ \\
+$\Sigma_1 \subset \Sigma \cup {\neg\psi }$ \\
+
+thrm 2.6.3 transistivity of deduciblity) \\
+$\Sigma \vdash \Sigma'$ and $\Sigma' \vdash \phi \implies \Sigma \vdash \phi$ \\
+Note A $\vdash $B means A $\vdash$ $B_i$ for all formulas in B. 
+
+1) $A_1,...,A_n \vdash \phi$ (premise) \\
+2) $A1,...,,A_{n-1} \vdash A_n \implies \phi$ ($\implies$ +) \\
+. \\
+. \\
+. \\
+n) EMPTY FUCKING SET $\vdash A_1 \implies (A_2 \implies ...(A_n \implies \phi ) ..)$ \\
+$\Sigma \vdash A_1 \implies (A_2 \implies ...(A_n \implies \phi) ..)$ introduction of premises (already true with current premises) \\
+$\Sigma \vdash A_1$ (premise) \\
+$\Sigma \vdash (A_2 \implies ...(A_n \implies \phi) ..)$ ($\implies$ -) \\
+. \\
+. \\
+. \\
+$\Sigma \vdash A_n \implies \phi$ \\
+$\Sigma \vdash A_n$ \\
+$\Sigma \vdash \phi$ ($\implies$ - N TIMES .....) \\
+
+ex: $\Sigma, \phi \vdash \psi, \Sigma, \phi \vdash \neg \psi \implies \vdash \neg \phi$ (reduction ad absurdum) ($\neg$ +) -> not a basic rule \\
+Obtained from $\neg$ - \\
+Box notation: \\
+ $\neg \neg \phi$ (assumption \\
+    $\neg \phi$ (assumption) \\
+    $\neg \neg \phi$ (copy) \\
+$ \phi$ ($\neg $- 2,3) \\
+ $\psi $(premise OF ABOVE $\vdash $shit) \\
+ $\neg \psi$ (premise AGAIN) \\
+$\neg \phi$ ($\neg $- 1,4) \\
+
+YOU MUST PROVE NEGATION ADDITION INLINE IF YOU USE IT \\
+
+$\Sigma, \phi \vdash \psi$ \\
+$\Sigma \vdash \Sigma$ \\
+$\Sigma, \neg \neg \phi \vdash \Sigma$ \\
+$\neg \neg \phi \vdash \phi$ (EXAMPLE YOU MUST PROVE IN FUCKING LINE) \\
+$\Sigma, \neg \neg \phi \vdash \phi$ \\
+$\Sigma, \neg \neg \phi \vdash \Sigma  $ \\
+$\Sigma, \neg \neg \phi \vdash \phi$ \\
+$\Sigma, \phi \vdash \psi$ \\
+$\Sigma, \neg \neg \phi \vdash \psi$ \\
+
+DOING ALL THIS FUCKING SHIT AGAIN FOR $\neg \psi$ \\
+WE GET A CONTRADICTION \\
+
+$\Sigma \vdash \neg \phi$ \\
+
+
+1. $\phi \implies \psi, \phi \vdash$  \\
+ 
+ 
+% lec jun 9th
+Proof of soundness theorem \\
+structural induction on the length of the proof n. \\
+bc: n = 1 \\
+$\phi \vdash \phi$ (ref) \\
+n = 2 \\
+$\Sigma, \phi \vdash \phi$ \\
+$\phi \vdash \phi$ (ref) \\
+$\Sigma, \phi \vdash \phi$ (ref, +) \\
+ 
+$\phi \vDash \phi$ (trivial truth table) \\
+$\Sigma, \phi \vDash \phi$ (also trivial) \\
+
+Inductive Hypothesis: \\
+Assume that for every proof $\Sigma \vdash \phi$ of size $\leq$ k \\
+we have $\Sigma \vDash \phi$ \\
+ 
+Inductive Conclusion: \\
+1. $\phi_1 $(premise) \\
+. \\
+. \\
+. \\
+n) $\phi_n $(premise) \\
+n+1) $\phi_{n+1}$ (ND rules) \\
+, \\
+. \\
+. \\
+k) $\phi_k$ (ND rules) \\
+k+1) $\phi_{k+1}$ (ND rules) [valid?] \\
+
+Case 1: \\
+$\phi$ obtained by writing \\
+$(\land$ +) rule \\
+. \\
+. \\
+. \\
+i) $\phi_i$ \\
+. \\
+. \\
+. \\
+j)$ \phi_j  i \leq j \leq k$ \\
+. \\
+. \\
+. \\
+k+1) $\phi = \phi_i \land \phi_j (\land$ +) \\
+i $\leq k$ \\
+$\Sigma \vdash \phi_i$ \\
+by ind. hyp \\
+$\Sigma \vDash \phi_i$ \\
+Similarly for j \\
+For every t,$ \Sigma^t \implies \phi_i^t =1$ and $\phi_j^t = 1 \implies (\phi_i \land \phi_j)^t = 1$ \\
+
+Case 2:$ \implies$- \\
+. \\
+. \\
+. \\
+i) $\phi$ i \\
+. \\
+. \\
+j) $\phi_i \implies \phi_j i,j \leq k$ \\
+. \\
+. \\
+k) $\phi = \phi_j$ \\
+
+We have $\Sigma^t = 1 \implies \phi_i^t = 1 $and $(\phi_i \implies \phi_j)^t = 1 \implies \phi_j^t = 1$ \\
+ 
+Completeness thrm proof: \\
+$\Sigma \vDash \phi \implies \Sigma \vdash \phi$ \\
+Contrapositive: \\
+$\Sigma \not \vdash \phi \implies \Sigma \not \vDash \phi$ \\
+ 
+$\Sigma \not \vdash \phi \implies \Sigma \cup \{ \neg \phi \} $consistent $\implies \Sigma \cup \{ \neg \phi \} $has a model (satisfiable) (model is a truth valuation that  satisfies it) $\implies \Sigma \not \vDash \phi$ \\
+
+ASIDE: \\
+$\Sigma$consistant iff there is no formula $\phi \in Form (\Lp) $\\ \\
+$\Sigma \vdash \phi$ \\
+$\Sigma \vDash \phi $ \\
+ 
+Ex. ${p , \neg p} \vdash p$ \\
+			    $ \vdash \neg p$ \\
+inconsistent \\
+BACK TO PROOF \\
+ 
+$\Sigma $- maximal constent if  \\
+1) $\Sigma $- consistent \\
+2) $\forall \phi \not \in \Sigma, \Sigma \cup { \phi } $is consistnet \\
+
+
+
+Soundness thrm (2): \\
+if $\Sigma $satisfiable then $\Sigma$ consistent \\
+
+
+Soundness thrm (1)$ \iff $Soundness thrm (2) \\
+
+
+$\implies $direction \\
+$\Sigma \vdash \phi \implies \Sigma \vDash \phi$ \\
+Prove that if $\Sigma $satisfiable then $\Sigma$ consistent \\
+Assuem the contrary $\Sigma $satifiable and $\Sigma $inconsistent \\
+
+ASSIDE \\
+$\Sigma$ inconsistent: $\exists \phi : \Sigma \vdash \phi $ \\
+$\Sigma \vdash \neg \phi$ \\
+
+Doing Soundness thrm (1). on the contrary \\
+$\Sigma$ \\
+$ \vDash \phi$ \\
+$\Sigma \vDash \neg \phi$ \\
+Therefore we get a contradiction \\
+$\forall$ t truth valuations $\ni \Sigma ^t = 1 \implies \phi^t = 1 $and $\neg \phi^t = 1 $(contradiction) \\
+$\implies  \Sigma$ consistent  \\
+
+<= DIRECTION \\
+$\Sigma$-sat $\implies \Sigma$ consistnent \\
+Prove that $\Sigma \vdash \phi \implies \Sigma \vDash \phi$ \\
+Assume the contrary \\
+$\Sigma \not \vdash \phi \implies \Sigma \not \vDash \phi$ \\
+$\Sigma \not \vDash \phi \implies \Sigma \cup { \neg \phi }$ satisfiable \\
+$\Sigma \vdash \phi $(hyp) \\
+$\Sigma \cup { \neg \phi } \vdash \phi $ \\
+-> coontradiction \\
+so assumption is invalid $\Sigma \vDash \phi$ \\
+so ST1 $\iff $ST2 \\
+$\Sigma \not \vDash \iff $(UNFINISHED FUCKING BULLSHIT) \\
+
+Completeness thmr(2) \\
+$\Sigma $consist $\implies \Sigma$ satisfiable \\
+
+Lemma \\
+$\Sigma$ max consist \\
+$\phi \in \Sigma \iff \Sigma \vdash \phi$ \\
+$\implies $ \\
+$\Sigma$ max const and $\phi \in \Sigma$ \\
+$\Sigma' := \Sigma - { \phi} $ \\
+1) $\phi \vdash \phi $(ref) \\
+2) $\Sigma', \phi \vdash \phi $(+,1) \\
+$\Sigma \vdash \phi$ \\
+
+<= \\
+$\Sigma$ max const and $\Sigma \vdash \phi$ \\
+Prove $\phi \in \Sigma $ \\
+Assume the contrary: $\phi \not \in \Sigma$ \\
+
+ASIDE DEFN OF MAX CONST \\
+$\Sigma$ max const:$ \forall \phi \not \in \Sigma, \Sigma \cup {\phi} $ \\
+$\Sigma \cup {\phi} $- inconsistn \\
+$\exists \alpha:$ \\
+$\Sigma \cup { \phi} \vdash \alpha$ \\
+$\Sigma \cup { \phi} \vdash \neg \alpha$ ($\neg$ +) \\
+ 
+(NEGATION ELIM) \\
+$\Sigma, \neg \phi \vdash \phi$ \\
+$\Sigma, \neg \phi \vdash \neg \phi$ \\
+$\Sigma \vdash \phi$ ($\neg$ -) \\
+
+$\Sigma$ - inconsistent (contradiction) \\
+$\phi \in \Sigma.$ \\
+
+MIDTERM LEVEL PROOF (remember/write down) \\
+$\Sigma \not \vdash \phi \implies \Sigma \cup { \neg \phi }$ consistent  \\
+Proof: \\
+Assume the contrary $\Sigma \cup { \neg \phi } $inconssitent \\
+$\exists \alpha$ \\
+$\Sigma \cup { \neg \phi} \vdash \alpha$ \\
+$\Sigma \cup { \neg \phi } \vdash \neg \alpha$ \\
+$\Sigma \vdash \phi$ ($\neg$ -) \\
+(contradiction with hyp) \\
+$\implies \Sigma \cup { \neg \phi}$ const.  \\
+
+Lindervaum lemma: \\
+$\Sigma$-consistent \\
+$\exists \Sigma' : \Sigma \cup \Sigma'$ -> maximum consistent \\
+
+3) \\
+$\Sigma \cup { \neg \phi }$ - satisfiable \\
+$then \Sigma \not \vDash \phi$ \\
+
+$\exists t: \Sigma^t = 1$ and $(\neg \phi)^t = 1$ \\
+Assume the contrary: $\Sigma \vDash \phi$ \\
+$\forall t: \Sigma ^t =1 \implies \\
+ \phi ^t = 1$ \\
+$(\neg \phi)^t = 0$ \\
+But that contradicts the $\exists$ line just above. \\
+Contradicts the conclusion, thus assumption is not correct \\
+$\Sigma \not \vDash \phi$ \\
+
+ 
+% TUTORIAL TUE JUNE 10th
+Soundness \\
+Formally if $\Sigma \vdash \alpha$ is a premise then $\Sigma \vDash \alpha$ \\
+Informally if a formula is provable then it is true \\
+
+Completeness \\
+FOrmally if $\Sigma \vDash \alpha$ then $\Sigma \vdash \alpha$ is provable \\
+Informally, if a formula is true, then it is provable \\
+
+Definition of consistent \\
+$\Sigma$ is consistent if for no $\alpha, \Sigma \vdash \alpha$ and $\Sigma \vdash (\neg \alpha)$ \\
+A set of $\Sigma$ is consistent if it does not allow us to prove a contradiction \\
+
+Question :- \\
+Is the following set consistent? \\
+$\Sigma = { ((p \implies q) \implies q), (q \implies p) }$ \\
+
+Claim :- \\
+If $\Sigma$ is satisfiable, then $\Sigma$ is consistent \\
+Proof :- \\
+Given a satisfying assignment v of $\Sigma$, we choose a variable p from $\Sigma$ and define $\alpha$ as $(\neg p)$ if v(p) = T and p if v(p) = F \\
+
+We then have the scenario where v satisfied$ \Sigma$ but does not satisfy our formula $\alpha$. Therefore, \\
+$\Sigma \not \vDash \alpha $and, from soundness, $\Sigma \not \vdash \alpha$ \\
+
+We are using that technique to prove the question. \\
+Find an $\alpha$ such that $\Sigma \not \vdash \alpha$ \\
+Let v(p) = T and v(q) = T \\
+Now let $\alpha = (\neg P)$ \\
+
+We now have $\Sigma \not \vDash \alpha and \Sigma \not \vdash \alpha$ and therefore $\Sigma $is consistent by our definition. (because it is consistent if it does not allow us to prove a contradiction, and that is what we have shown) \\
+
+Question :-  \\
+Is the following set consistent? \\
+$\Sigma = { (p \implies q), p, (\neg q) }$ \\
+
+Answer :- \\
+NO! lul not telling you why, jk. \\
+p $\implies$ q \\
+p \\
+q (mp) \\
+$\neg $q (premise) \\
+We can prove a contradiction from this! \\
+
+Question :-  \\
+Is the following set consistent? \\
+$\Sigma = { (p \implies (q \implies r)), (p \implies q), (\neg (p \implies r)) }$ \\
+
+Question :- \\
+If $\Sigma_a $is consistent and $\Sigma_b $i consistent, is$ \Sigma_a \cup \Sigma_b$ always consistent? \\
+Answer :- no \\
+$\Sigma_a =  { p}$ \\
+$\Sigma_b = { \neg p}$ \\
+$\Sigma_a \cup \Sigma_b = { p, \neg p}$ \\ 
+Prove a contradiction \\
+ 
+How about $\Sigma_a - \Sigma_b$  \\
+We can make the claim A intersection  B is less than A or less than B \\
+If $\Sigma$ is consistent and $\Sigma' \subset \Sigma$ is consistent then $\Sigma'$ is consistnet \\
+
+% had to leave tutorial abruptly here (lin alg midterm exam)
+
+
+%%%%%% REVIEW LECTURE %%%%%%%
+Soundness Thrm: \\
+If $\Sigma \vdash \phi \implies \Sigma \vDash \phi$ \\
+ 
+Completeness Thrm: \\
+If $\Sigma \vDash \phi \implies \Sigma \vdash \phi$  \\
+
+Soundness Thrm (2); \\
+If $\Sigma$-satisfiable $\implies \Sigma$-consistent \\
+
+Completeness Thrm (2): \\
+If $\Sigma$-consistent $\implies \Sigma$-satisfiable \\
+
+Proof of competeness (1): \\
+We will prove by contrapositive: \\
+1) \\
+$\Sigma \not \vdash \phi \implies \Sigma \vDash \phi$ \\
+$\Sigma \not \vdash \phi \implies$ \\
+$\Sigma{\neg \phi}$ consistent \\
+2) \\
+$\Sigma{\neg \phi}$ consistent $\implies$ \\
+$\Sigma{\neg \phi}$-satisfiable \\
+3) \\
+$\Sigma{\neg \phi}$-satisfiable $\implies \Sigma \vDash \phi$ \\
+
+Prove ??????? \\
+1) \\
+$\Sigma \not \vdash \phi$ \\ 
+Prove $\Sigma \cup {\neg \phi}$ consistnet \\
+Assume $\Sigma \cup {\neg \phi} $ inconsist \\
+$\exists \alpha : \Sigma \cup { \neg \phi} \vdash \phi$ \\
+$\Sigma \cup { \neg \phi} \vdash \neg \phi$ \\
+$\Sigma \vdash \phi (\neg -)$ \\
+(contradiction) \\
+2) \\
+$\Sigma \cup { \neg \phi}$ - consistent then $\Sigma \cup { \neg \phi}$ - satisfiable \\
+
+Lemma Lindenbaum: \\
+For every $\Sigma$-consistent, $\exists \Sigma' \ni$ $\Sigma \cup \Sigma'$ - maximal consistent \\
+ 
+Lemma (5.3.6) \\
+$\Sigma^*$-maximal consistent and $\forall p \in Atom(\Lp)$, $p^t = 1$ $\iff$ $p \in \Sigma^*$ \\
+Then \\
+$\forall A \in Form(\Lp), A^t = 1 \iff A \in \Sigma^*$ \\
+
+$\Sigma \cup { \neg \phi}$is consistent (hypothesis) \\
+Prove $\Sigma \cup { \neg \phi}$ is satisfiable. \\
+By lindebaum lemma, we can extend this set \\
+$\exists \Sigma^*$-max const $\ni$  \\
+$\Sigma \cup { \neg \phi } \subset \Sigma^*$ \\
+By second lemma \\
+$\neg \phi \in \Sigma^*$ \\
+$(\neg \phi)^t = 1$ \\
+$\Sigma \subset \Sigma^*$ \\
+By second lemma \\
+$\forall A \in \Sigma \subset \Sigma^* \implies A^t = 1$ \\
+$\implies \Sigma^t = 1$ \\
+$\forall t: (\neg \phi)^t =1 $ and $ \Sigma^t = 1$ \\
+$\implies \Sigma \cup { \neg \phi}$ -satisfiable \\
+LAST STEP? PROOF WAS JUST PROVEN WTF \\
+$\Sigma \cup { \neg \phi}$-satisfiable \\
+Prove $\Sigma \not \vDash \phi$ \\
+Let us assume $\Sigma \vDash \phi$ \\
+$\exists t  \ni \Sigma^t = 1 $ and $(\neg \phi)^t = 1$ by defn of satisfiale. \\
+$\implies \phi^t = 0$ \\
+$\Sigma \vDash \phi$ \\
+$\forall t' \ni \Sigma^{t'} = 1 \implies \phi^{t'} = 1$  \\
+But this contradicts, so our assumption is not correct so \\
+$\Sigma \not \vDash \phi$, THUS PROVEN COMPLETENESS? \\
+
+
+SPRING 2013 MIDTERM (for review) \\
+
+while the waves are high i will go surfing \\
+$p \land q$ \\
+swimming even though waves high \\
+
+$p \land q$ \\ 
+i will make sand castles only if i dont go swimming or diving \\
+(PROPER $p \implies \neg (q \lor q))$ \\
+i wont go swimming unless i remember to bring my towel and bathing suit \\
+$p \implies (q \land r)$ \\
+
+$\vdash_h (A \implies B) \implies (\neg B \implies \neg A)$ \\
+Deduction thrm. $A \implies B \vdash_H \neg B \implies \neg A)$ \\
+1) $A \implies B$ \\
+2) $\neg \neg A \implies A$ (ex. 5) \\
+3) $\neg \neg A \implies B$ (transetivity ex. 2) \\
+4) $B \implies (\neg \neg B) $(ex. *) \\
+
+MINI PROOF (*) \\
+$\vdash B \implies \neg \neg B$ \\
+1) $\neg \neg \neg B \implies \neg B $(ex. 5) \\
+2) $(\neg \neg \neg B \implies \neg B) \implies (B \implies \neg \neg B)$ (ax. 3) \\
+
+5) $\neg \neg A \implies \neg \neg B$ (trans ex.2) \\
+6) $(\neg \neg A \implies \neg \neg B) \implies (\neg B \implies \neg A) $(ax. 3) \\
+7 $(\neg B \implies \neg A)$ (mp) \\
+Deduction theorem OUTTA THIS BITCH \\
+$\vdash_h (A \implies B) \implies (\neg B \implies \neg A)$ \\
+
+ALSO SHIT LIKE \\
+$\vdash_h (\neg A \implies B) \implies (\neg B \implies A)$ \\
+Ded thrm $\neg A \implies B \vdash_H \neg B \implies A$ \\
+1) $\neg A \implies B$ \\
+2) $B \implies \neg \neg B$ (ex. *) \\
+3) $\neg A \implies \neg \neg B $(transitivity ex. 2) \\
+4) $(\neg A \implies \neg \neg B ) \implies (\neg B \implies A) $(ax. 3) \\
+5) $\neg B \implies A$ (mp) \\ 
+DDEDUCTION THRM OUT OF THIS FUCKING BITCH \\
+$\vdash_H (\neg A \implies B) \implies (\neg B \implies A)$
+
+
+
+\end{document}

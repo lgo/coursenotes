@@ -1,0 +1,8 @@
+*.swp
+*.swo
+*~
+*.aux
+*.toc
+*.log
+*.out
+*.gz
